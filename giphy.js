@@ -1,6 +1,6 @@
 // Initial array of movies
 var cars = ["Audi", "BMW", "Mercedes", "Acura", "Infiniti", "Porsche", "Dodge", "Ford", "Volvo", "Maserati", "Fiat", "Toyota", "Lexus"];
-//Function for
+//Function for 
 function captureCarName () {
     
         var carName = $(this).attr("data-name");
@@ -34,10 +34,34 @@ function renderButtons() {
 
 // This function handles events where one button is clicked
 $("#search-car").on("click", function(event) {
+
     // Preventing the buttons default behavior when clicked (which is submitting a form)
     event.preventDefault();
+
     // This line grabs the input from the textbox
     var car = $("#car-input").val().trim();
+
+   //Concatenation of the search url with the search term and api key
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+    car + "&api_key=o8yLqpswHBgLXjXQNuvzUmOG2XpKEOEk";
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).then(function(response) {
+        // Creating a div to hold the gif
+        var carDiv = $("<div class='car'>");
+        // Storing the rating data
+        var rating = response.data.rating;
+        console.log(response.data.rating);
+
+        // Creating an element to have the rating displayed
+        var ratingElement = $("<p>").text("Rating: " + rating);
+        // Displaying the rating
+        carDiv.append(ratingElement);
+
+        
+      });
 
     // Adding the movie from the textbox to our array
     cars.push(car);
@@ -45,16 +69,10 @@ $("#search-car").on("click", function(event) {
     // Calling renderButtons which handles the processing of our movie array
     renderButtons();
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-    car + "&api_key=o8yLqpswHBgLXjXQNuvzUmOG2XpKEOEk";
+
     
     
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-      }).then(function(response) {
-        $("#gifs-appear-here").text(JSON.stringify(response));
-      });
+
 });
 
  /*  // Adding click event listener to the button clicked

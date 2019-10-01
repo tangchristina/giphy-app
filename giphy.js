@@ -1,5 +1,5 @@
 // Initial array of movies
-var cars = ["Audi", "BMW", "Mercedes", "Acura", "Infiniti", "Porsche", "Dodge", "Ford", "Volvo", "Maserati", "Fiat", "Toyota", "Lexus"];
+var cars = ["Audi", "BMW", "Mercedes", "Acura", "Infiniti", "Porsche", "Dodge", "Ford", "Volvo", "Maserati", "Fiat", "Toyota", "Lexus", "Hyundai", "Kia"];
 //Function for 
 function captureCarName () {
     
@@ -49,16 +49,35 @@ $("#search-car").on("click", function(event) {
         url: queryURL,
         method: "GET"
       }).then(function(response) {
-        // Creating a div to hold the gif
-        var carDiv = $("<div class='car'>");
-        // Storing the rating data
-        var rating = response.data.rating;
-        console.log(response.data.rating);
+          // Looping over every result item
+          for (var i = 0; i < results.length; i++) {
 
-        // Creating an element to have the rating displayed
-        var ratingElement = $("<p>").text("Rating: " + rating);
-        // Displaying the rating
-        carDiv.append(ratingElement);
+            // Only taking action if the photo has an appropriate rating
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+              // Creating a div for the gif
+              var gifDiv = $("<div>");
+
+              // Storing the result item's rating
+              var rating = results[i].rating;
+
+              // Creating a paragraph tag with the result item's rating
+              var p = $("<p>").text("Rating: " + rating);
+
+              // Creating an image tag
+              var carImage = $("<img>");
+
+              // Giving the image tag an src attribute of a proprty pulled off the
+              // result item
+              carImage.attr("src", results[i].images.fixed_height.url);
+
+              // Appending the paragraph and personImage we created to the "gifDiv" div we created
+              gifDiv.append(p);
+              gifDiv.append(carImage);
+
+              // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
+              $("#gifs-appear-here").prepend(gifDiv);
+            }
+          }
 
         
       });

@@ -2,7 +2,7 @@
 $(document).ready(function(){
 
 // Initial array of cars
-var cars = ["Audi", "BMW", "Mercedes", "Acura", "Infiniti", "Porsche", "Dodge", "Ford", "Volvo", "Maserati", "Fiat", "Toyota", "Lexus", "Hyundai", "Kia"];
+var cars = ["Audi", "BMW", "Mercedes", "Acura", "Infiniti", "Porsche", "Dodge", "Ford", "Volvo", "Maserati", "Fiat", "Toyota", "Lexus", "Hyundai", "Tesla"];
              
 // Function for displaying movie data
 function renderButtons() {
@@ -26,7 +26,9 @@ function renderButtons() {
       // Adding the button to the HTML
       $("#buttons-view").append(a);
     }
-  }   
+  } 
+
+renderButtons();
 
 // This function handles events where one button is clicked
 $("#search-car").on("click", function(event) {
@@ -68,77 +70,62 @@ var carName = $(this).attr("data-name");
        // Looping over every result item
        for (var i = 0; i < results.length; i++) {
 
-         // Only taking action if the photo has an appropriate rating
-         if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+
            // Creating a div for the gif
-           var gifDiv = $("<div>");
+           var carDiv = $("<div>");
 
            // Storing the result item's rating
-           var rating = results[i].rating;
-
-           // Creating a paragraph tag with the result item's rating
-           var p = $("<p>").text("Rating: " + rating);
+           var rating = $("<p class='rating'>").text("Rating: " + results[i].rating);
+          
+           
 
            // Creating an image tag
            var carImage = $("<img>");
 
            // Giving the image tag an src attribute of a proprty pulled off the
            // result item
-           carImage.attr("src", results[i].images.fixed_height.url);
+           carImage.addClass("image-gifs");
+           carImage.attr("src", results[i].images.fixed_height_still.url);
+           carImage.attr("data-state", "still");
+           carImage.attr("data-position", i);
+           
 
            // Appending the paragraph and personImage we created to the "gifDiv" div we created
-           gifDiv.append(p);
-           gifDiv.append(carImage);
+           carDiv.append(rating);
+           carDiv.append(carImage);
+          
 
            // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
-           $("#gifs-appear-here").prepend(gifDiv);
-         }
-       }
-
-     
-   });
-}
- /*  // Adding click event listener to the button clicked
-$("button").on("click", function() {
-
-    // prevent form from submitting
-    event.preventDefault();
-
-
+           $("#gifs-appear-here").prepend(carDiv);
+        };
+    });
     
+}    
+   
 
-console.log(car);
+//Calling the getGif function everytime a button with the class ".car" gets clicked
+$(document).on("click", ".car", getGif);
 
-        // Looping through each result item
-        for (var i = 0; i < results.length; i++) {
+    function animate() {
 
-          // Creating and storing a div tag
-          var carDiv = $("<div>");
-
-          // Creating a paragraph tag with the result item's rating
-          var p = $("<p>").text("Rating: " + results[i].rating);
-
-          // Creating and storing an image tag
-          var carImage = $("<img>");
-          // Setting the src attribute of the image to a property pulled off the result item
-          carImage.attr("src", results[i].images.fixed_height.url);
-
-          // Setting the src attribute of the image to a property pulled off the result item
-          carImage.attr("src", results[i].images.fixed_height.url);
-
-          // Appending the paragraph and image tag to the animalDiv
-          carDiv.append(p);
-          carDiv.append(carImage);
-
-          // Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
-          $("#gifs-appear-here").prepend(carDiv);
-        }
-      });
         
-});*/
+        // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+        var state = $(this).attr("data-state");
+        var position = $(this).attr("data-position");
+        position = parseInt(position);
+        // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+        // Then, set the image's data-state to animate
+        // Else set src to the data-still value
+        if (state === "still") {
+          $(this).attr("src", results[position].images.fixed_height.url);
+          $(this).attr("data-state", "animate");
+        } else {
+          $(this).attr("src", reuslts[position].images.fixed_height_still.url);
+          $(this).attr("data-state", "still");
+        }
+      
+    };
 
-$(document).on("click", ".car", captureCarName);
-
-      // Calling the renderButtons function to display the intial buttons
-      renderButtons();
+    $(document).on("click", ".image-gifs", animate);
+      
 });

@@ -3,7 +3,8 @@ $(document).ready(function(){
 
 // Initial array of cars
 var cars = ["Audi", "BMW", "Mercedes", "Acura", "Infiniti", "Porsche", "Dodge", "Ford", "Volvo", "Maserati", "Fiat", "Toyota", "Lexus", "Hyundai", "Tesla"];
-             
+var results;
+  
 // Function for displaying movie data
 function renderButtons() {
 
@@ -39,7 +40,7 @@ $("#search-car").on("click", function(event) {
     // This line grabs the input from the textbox
     var carInput = $("#car-input").val().trim();
 
-    // Adding the movie from the textbox to our array
+    // Adding the car from the textbox to our array
     cars.push(carInput);
 
     // Calling renderButtons which handles the processing of our movie array
@@ -120,7 +121,7 @@ $(document).on("click", ".car", getGif);
           $(this).attr("src", results[position].images.fixed_height.url);
           $(this).attr("data-state", "animate");
         } else {
-          $(this).attr("src", reuslts[position].images.fixed_height_still.url);
+          $(this).attr("src", results[position].images.fixed_height_still.url);
           $(this).attr("data-state", "still");
         }
       

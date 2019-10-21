@@ -1,4 +1,7 @@
 # giphy-app
+DEPLOYMENT
+https://tangchristina.github.io/giphy-app/
+
 INSTRUCTIONS
 
 USE THIS GIPHY APP TO SEARCH FOR YOUR FAVORITE CAR GIFS ON THE GIPHY WEBSITE.
